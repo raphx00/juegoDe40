@@ -2,26 +2,49 @@ import java.util.ArrayList;
 
 public class Jugador {
     private String nombre;
-    private ArrayList<Carta> cartas;
-    private int puntos;
+    private ArrayList<Carta> carton;
+    private Mano mano;
+    private int puntuacion;
+    private int caidas;
 
     public Jugador(String nombre) {
         this.nombre = nombre;
-        cartas = new ArrayList<>();
+        carton = new ArrayList<>();
+        mano =  new Mano();
+        puntuacion = 0;
+        caidas = 0;
     }
 
     public void agregarCarta(Carta carta) {
-        cartas.add(carta);
+        carton.add(carta);
     }
 
-    public void mostrarCartas() {
-        System.out.println(nombre + " tiene las siguientes cartas:");
-        for (Carta carta : cartas) {
-            System.out.println(carta);
-        }
+    public Mano getMano(){
+        return mano;
     }
 
     public ArrayList<Carta> getCartas() {
-        return cartas;
+        return carton;
+    }
+
+    public void agregarPuntos(int puntos) {
+        this.puntuacion = this.puntuacion + puntos;
+    }
+
+    public boolean ganador(){
+        return puntuacion >= 40 || mano.verificarMesa() || caidas == 4;
+    }
+
+    public void puntosCarton(){
+        int puntos = 0;
+        if(carton.size() > 13){
+            for ( int i = carton.size() ; i > 13 ; i--){
+                puntos++;
+            }
+            if(puntos % 2 == 1){
+                puntos++;
+            }
+            agregarPuntos(puntos);
+        }
     }
 }

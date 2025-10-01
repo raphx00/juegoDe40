@@ -22,4 +22,17 @@ public class Mano {
         }
     }
 
+    public boolean verificarMesa(){
+        boolean haymesa = true;
+        Carta carta = cartas.get(0);
+        for( Carta c: cartas){
+            if(c.getValor().equals(carta.getValor()))
+                haymesa = true;
+            else{
+                haymesa = false;
+                break;
+            }
+        }
+        return haymesa;
+    }
 }

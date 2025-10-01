@@ -22,7 +22,7 @@ public class Juego {
         while (turno < 40) {
             System.out.println("\nTurno " + (turno + 1));
             for (int i = 0; i < 3; i++) {
-                jugadores[i].mostrarCartas();
+                jugadores[i].getMano().mostrarCartas();
             }
             turno++;
             // Aquí puedes agregar más reglas para determinar las jugadas de los jugadores
