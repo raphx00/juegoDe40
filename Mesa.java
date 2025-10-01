@@ -24,4 +24,15 @@ public class Mesa {
         }
     }
 
+    public boolean verificarCarta(Carta carta){
+        for (Carta c : cartasEnMesa){
+            if ( c == carta)
+                return true;
+        }
+        return false;
+    }
+
+    public boolean verificarLimpia(){
+        return cartasEnMesa.isEmpty();
+    }
 }

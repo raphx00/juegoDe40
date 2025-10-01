@@ -54,11 +54,14 @@ public class Juego {
             round += 1;
         }
 
-        // This is the final round
-        // We have to deal the cards, 3 for each player
-        for(Jugador player: players){
-            for(int i = 0; i < 5; i++){
-                player.agregarCarta(deck.repartir());
+    }
+
+    public void jugar() {
+        int turno = 0;
+        while (turno < 40) {
+            System.out.println("\nTurno " + (turno + 1));
+            for (int i = 0; i < 3; i++) {
+                jugadores[i].getMano().mostrarCartas();
             }
         }
         // We add the last card to the table.
