@@ -7,6 +7,7 @@ public class Jugador {
     private int puntuacion;
     private int caidas;
 
+
     public Jugador(String nombre) {
         this.nombre = nombre;
         carton = new ArrayList<>();
