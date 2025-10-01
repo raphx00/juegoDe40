@@ -1,14 +1,21 @@
-import java.util.Stack;
+import java.util.ArrayList;
 
 public class Mesa {
-    private Stack<Carta> cartasEnMesa;
+    private ArrayList<Carta> cartasEnMesa;
 
     public Mesa() {
-        cartasEnMesa = new Stack<>();
+        cartasEnMesa = new ArrayList<>();
     }
 
     public void agregarCarta(Carta carta) {
-        cartasEnMesa.push(carta);
+        cartasEnMesa.add(carta);
+    }
+
+    public Carta quitarCarta(Carta carta) {
+        if (cartasEnMesa.remove(carta)) {
+            return carta;
+        }
+        return null;
     }
 
     public void mostrarCartas() {

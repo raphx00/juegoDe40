@@ -12,6 +12,10 @@ public class Mano {
         cartas.add(carta);
     }
 
+    public void jugarCarta(Carta carta) {
+        cartas.remove(carta);
+    }
+
     public void mostrarCartas() {
         for (Carta carta : cartas) {
             System.out.println(carta);
