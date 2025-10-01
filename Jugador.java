@@ -3,6 +3,7 @@ import java.util.ArrayList;
 public class Jugador {
     private String nombre;
     private ArrayList<Carta> cartas;
+    private Mano mano_jugador;
 
     public Jugador(String nombre) {
         this.nombre = nombre;
