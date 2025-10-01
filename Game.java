@@ -2,11 +2,11 @@
 import java.util.Collections;
 import java.util.Arrays;
 
-public class Juego {
+public class Game {
 
     private Baraja deck;
-    private Jugador[]  players = new Jugador[3];
-    private Mesa mesa = new Mesa();
+    private Player[]  players = new Player[3];
+    private Table mesa = new Table();
     private boolean winner = false; 
     private int round = 0;
 
@@ -19,7 +19,7 @@ public class Juego {
             Collections.shuffle(Arrays.asList(players));
 
             // We have to deal the cards, 5 for each player
-            for(Jugador player: players){
+            for(Player player: players){
                 for(int i = 0; i < 5; i++){
                     player.agregarCarta(deck.repartir());
                 }
@@ -28,7 +28,7 @@ public class Juego {
             // Now every player has to finish their cards doing one action per turn.
             // At the end of every action we check if the player hasnt won yet.
             for(int i = 0; i < 5; i++){
-                for(Jugador player: players){
+                for(Player player: players){
 
                     // Here we do the game logic.
 
@@ -61,7 +61,7 @@ public class Juego {
         while (turno < 40) {
             System.out.println("\nTurno " + (turno + 1));
             for (int i = 0; i < 3; i++) {
-                jugadores[i].getMano().mostrarCartas();
+                
             }
         }
         // We add the last card to the table.
@@ -69,7 +69,7 @@ public class Juego {
 
         // We repeat game logic but just 3 times
         for(int i = 0; i < 3; i++){
-                for(Jugador player: players){
+                for(Player player: players){
 
                 }
             }

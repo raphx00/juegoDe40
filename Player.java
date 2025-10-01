@@ -1,30 +1,38 @@
 import java.util.ArrayList;
 
-public class Jugador {
-    private String nombre;
-    private ArrayList<Carta> carton;
-    private Mano mano;
+public class Player {
+    private String name;
+    private ArrayList<Card> carton;
+    private Hand mano;
     private int puntuacion;
     private int caidas;
 
 
-    public Jugador(String nombre) {
-        this.nombre = nombre;
+    public Player(String nombre) {
+        this.name = nombre;
         carton = new ArrayList<>();
-        mano =  new Mano();
+        mano =  new Hand();
         puntuacion = 0;
         caidas = 0;
     }
 
-    public void agregarCarta(Carta carta) {
+    public Player(){
+        this.name = "Jugador";
+        carton = new ArrayList<>();
+        mano =  new Hand();
+        puntuacion = 0;
+        caidas = 0;
+    }
+
+    public void agregarCarta(Card carta) {
         carton.add(carta);
     }
 
-    public Mano getMano(){
+    public Hand getMano(){
         return mano;
     }
 
-    public ArrayList<Carta> getCartas() {
+    public ArrayList<Card> getCartas() {
         return carton;
     }
 

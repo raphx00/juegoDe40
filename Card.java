@@ -1,10 +1,10 @@
 
 // manejo de cada carta y sus porpiedades
-public class Carta {
+public class Card {
     private String palo;
     private String valor;
 
-    public Carta(String valor, String palo) {
+    public Card(String valor, String palo) {
         this.valor = valor;
         this.palo = palo;
     }

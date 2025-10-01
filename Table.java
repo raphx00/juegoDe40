@@ -1,17 +1,17 @@
 import java.util.ArrayList;
 
-public class Mesa {
-    private ArrayList<Carta> cartasEnMesa;
+public class Table {
+    private ArrayList<Card> cartasEnMesa;
 
-    public Mesa() {
+    public Table() {
         cartasEnMesa = new ArrayList<>();
     }
 
-    public void agregarCarta(Carta carta) {
+    public void agregarCarta(Card carta) {
         cartasEnMesa.add(carta);
     }
 
-    public Carta quitarCarta(Carta carta) {
+    public Card quitarCarta(Card carta) {
         if (cartasEnMesa.remove(carta)) {
             return carta;
         }
@@ -19,13 +19,13 @@ public class Mesa {
     }
 
     public void mostrarCartas() {
-        for (Carta carta : cartasEnMesa) {
+        for (Card carta : cartasEnMesa) {
             System.out.println(carta);
         }
     }
 
-    public boolean verificarCarta(Carta carta){
-        for (Carta c : cartasEnMesa){
+    public boolean verificarCarta(Card carta){
+        for (Card c : cartasEnMesa){
             if ( c == carta)
                 return true;
         }

@@ -1,31 +1,31 @@
 import java.util.ArrayList;
 
-public class Mano {
+public class Hand {
 
-    private ArrayList<Carta> cartas;
+    private ArrayList<Card> cartas;
 
-    public Mano() {
+    public Hand() {
         cartas = new ArrayList<>();
     }
 
-    public void agregarCarta(Carta carta) {
+    public void agregarCarta(Card carta) {
         cartas.add(carta);
     }
 
-    public void jugarCarta(Carta carta) {
+    public void jugarCarta(Card carta) {
         cartas.remove(carta);
     }
 
     public void mostrarCartas() {
-        for (Carta carta : cartas) {
+        for (Card carta : cartas) {
             System.out.println(carta);
         }
     }
 
     public boolean verificarMesa(){
         boolean haymesa = true;
-        Carta carta = cartas.get(0);
-        for( Carta c: cartas){
+        Card carta = cartas.get(0);
+        for( Card c: cartas){
             if(c.getValor().equals(carta.getValor()))
                 haymesa = true;
             else{

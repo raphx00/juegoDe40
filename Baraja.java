@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Baraja {
-    private ArrayList<Carta> cartas;
+    private ArrayList<Card> cartas;
 
     public Baraja() {
         cartas = new ArrayList<>();
@@ -11,13 +11,13 @@ public class Baraja {
 
         for (String palo : palos) {
             for (String valor : valores) {
-                cartas.add(new Carta(valor, palo));
+                cartas.add(new Card(valor, palo));
             }
         }
         Collections.shuffle(cartas); // Mezcla las cartas
     }
 
-    public Carta repartir() {
+    public Card repartir() {
         if (cartas.isEmpty()) {
             return null;
         }
