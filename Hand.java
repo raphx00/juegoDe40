@@ -16,9 +16,15 @@ public class Hand {
         cartas.remove(carta);
     }
 
+    public Card playCardByIndex(int index){
+        return cartas.remove(index);
+    }
+
     public void mostrarCartas() {
+        int idx = 0;
         for (Card carta : cartas) {
-            System.out.println(carta);
+            System.out.println(idx+"- [" + carta.getPalo() + " " + carta.getValor() + "]");
+            idx++;
         }
     }
 
@@ -34,5 +40,9 @@ public class Hand {
             }
         }
         return haymesa;
+    }
+
+    public int getSize(){
+        return cartas.size();
     }
 }

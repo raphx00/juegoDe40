@@ -1,30 +1,42 @@
 //Este Juego es 40 para 3 jugadores.
 import java.util.Collections;
+import java.util.Scanner;
 import java.util.Arrays;
 
 public class Game {
 
-    private Baraja deck;
+    private Deck deck;
+    private Card lastPlayedCard = null;
+    private Card playedCard;
     private Player[]  players = new Player[3];
-    private Table mesa = new Table();
+    private Table table = new Table();
     private boolean winner = false; 
     private int round = 0;
 
-    public void play40(){
 
+    public void play40(Player p1, Player p2, Player p3) {
+
+        Scanner scanner = new Scanner(System.in);
+        int choice;
+
+        players[0] = p1;
+        players[1] = p2;
+        players[2] = p3;
+
+        deck = new Deck();
         // We will be using base 0 so this would be 3 rounds.
-        while(round < 3){
-            
-            // We shuffle the players so that its random who goes first
-            Collections.shuffle(Arrays.asList(players));
 
+        // We shuffle the players so that its random who goes first
+        /* At the moment we dont have a way to identify players so we just shuffle the array */
+        Collections.shuffle(Arrays.asList(players));
+        
+        while(round < 3){    
             // We have to deal the cards, 5 for each player
             for(Player player: players){
                 for(int i = 0; i < 5; i++){
-                    player.agregarCarta(deck.repartir());
+                    player.addCardToHand(deck.repartir());
                 }
             }
-
             // Now every player has to finish their cards doing one action per turn.
             // At the end of every action we check if the player hasnt won yet.
             for(int i = 0; i < 5; i++){
@@ -33,14 +45,32 @@ public class Game {
                     // Here we do the game logic.
 
                     // We show the player the table and its hand.
+                    System.out.println("Cartas en la mesa:");
+                    table.mostrarCartas();
+
+                    System.out.println("Tus cartas:");
+                    player.showHand();
+
                     // We let the player choose a card from his hand to be played
-                    
+                    System.out.print("Elige una carta para jugar: "); 
+                    while(true){
+                        choice = scanner.nextInt();
+                        if(choice < 0 || choice >= player.getMano().getSize()) System.out.print("Esa carta no existe. Elige de nuevo.");
+                        else break;
+                    }
+
+                    playedCard = player.getMano().playCardByIndex(choice);
+
                     // If the played card is in the table by both sum and number we let the player choose which to take
-                    // If they play by number and it has the same value as lastplayed, then they get 2 points
+                    // We still need to implement this one !!!
+                    
+                    // If they play by value as lastplayed, then they get 2 points
+                    if(table.verificarCarta(playedCard)){
+                        if(playedCard == lastPlayedCard) player.agregarPuntos(2);
+                        player.addCardToCarton(playedCard);
+                    }
                     
                     // If the played card is in the table either by number or by a sum the player takes them
-                        // If they play by number and it has the same value as lastplayed, then they get 2 points
-                    
                         // Then we check if the next number is in the table, and if it is: the player also takes it
                         // Finally if the table is empty the player earns 2 points if under 38 points.
 
@@ -65,7 +95,7 @@ public class Game {
             }
         }
         // We add the last card to the table.
-        mesa.agregarCarta(deck.repartir());
+        table.agregarCarta(deck.repartir());
 
         // We repeat game logic but just 3 times
         for(int i = 0; i < 3; i++){

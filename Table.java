@@ -20,7 +20,7 @@ public class Table {
 
     public void mostrarCartas() {
         for (Card carta : cartasEnMesa) {
-            System.out.println(carta);
+            System.out.println("[" + carta.getPalo() + " " + carta.getValor() + "]");
         }
     }
 
