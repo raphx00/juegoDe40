@@ -35,4 +35,8 @@ public class Table {
     public boolean verificarLimpia(){
         return cartasEnMesa.isEmpty();
     }
+
+    public ArrayList<> suma(){
+        
+    }
 }
