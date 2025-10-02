@@ -12,6 +12,7 @@ public class Game {
     private Table table = new Table();
     private boolean winner = false; 
     private int round = 0;
+    private Card[] pair;
 
 
     public void play40(Player p1, Player p2, Player p3) {
@@ -84,7 +85,25 @@ public class Game {
                             // We only check when something was removed from the table
                             if(table.verificarLimpia() && player.getScore() < 38) player.agregarPuntos(2);
                         }
-                        else{}
+                        else{
+                            pair = table.removePairBySum(playedCard);
+                            if(pair != null){
+                                // If the played card is the last played one they get 2 points (Caida)
+                                if(playedCard == lastPlayedCard) player.agregarPuntos(2);
+
+                                // Takes the played card and the ones in the table
+                                player.addCardToCarton(playedCard);
+                                player.addCardToCarton(pair[0]);
+                                player.addCardToCarton(pair[1]);
+
+                                // We only check when something was removed from the table
+                                if(table.verificarLimpia() && player.getScore() < 38) player.agregarPuntos(2);
+                            }
+                            else{
+                                System.out.println("Error: No se pudo encontrar un par que sume el valor de la carta jugada.");
+                                table.agregarCarta(playedCard);
+                            }
+                        }
                     }
                     
                     // If they play by value as lastplayed, then they get 2 points

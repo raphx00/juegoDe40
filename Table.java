@@ -51,8 +51,11 @@ public class Table {
 
         //Checks if the card has a value to sum
         if(carta.getCardValue() != null){
+
             for(int i = 0; i < cartasEnMesa.size(); i++){
+                if(cartasEnMesa.get(i).getCardValue() == null) continue; // skip non-numeric cards
                 for(int j = i + 1; j < cartasEnMesa.size(); j++){
+                    if(cartasEnMesa.get(j).getCardValue() == null) continue; // skip non-numeric cards
                     seenValues.add((cartasEnMesa.get(i).getCardValue())+(cartasEnMesa.get(j).getCardValue()));
                 }
             }
@@ -105,7 +108,5 @@ public class Table {
         return cartasEnMesa.isEmpty();
     }
 
-    public ArrayList<> suma(){
-        
-    }
+  
 }

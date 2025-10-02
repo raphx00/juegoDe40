@@ -1,6 +1,7 @@
 
 // manejo de cada carta y sus porpiedades
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class Card {
@@ -21,18 +22,14 @@ public class Card {
     );
 
     // Map to determine the point value of each card
-    private Map<String, Integer> cardPoints= Map.of(
-            "As", 1,
-            "2", 2,
-            "3", 3,
-            "4", 4,
-            "5", 5,
-            "6", 6,
-            "7", null,
-            "J", null,
-            "Q", null,
-            "K", null
-    );
+    private Map<String, Integer> cardPoints = new HashMap<String, Integer>() {{
+        put("As", 1);
+        put("2", 2);
+        put("3", 3);
+        put("4", 4);
+        put("5", 5);
+        put("6", 6);
+    }};
 
     public Card(String valor, String palo) {
         this.valor = valor;
