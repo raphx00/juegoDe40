@@ -2,13 +2,13 @@ import java.util.ArrayList;
 
 public class Player{
     private ArrayList<Card> carton;
+    private String nombre;
     private Hand mano;
     private int puntuacion;
     private int caidas;
 
-
-    //Creates a new player with an empty hand and pile
-    public Player(){
+    public Player(String nombre){
+        this.nombre = nombre;
         carton = new ArrayList<>();
         mano =  new Hand();
         puntuacion = 0;
@@ -19,7 +19,9 @@ public class Player{
     public void addCardToCarton(Card carta) {
         carton.add(carta);
     }
-
+    public String getNombre(){
+        return nombre;
+    }
     // Adds card to hand
     public void addCardToHand(Card card){
         mano.agregarCarta(card);

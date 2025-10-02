@@ -84,14 +84,12 @@ public class Table {
                 Card first  = cartasEnMesa.get(j);
                 Card second = cartasEnMesa.get(i);
 
-                // Remove higher index first to avoid shifting
-                if (i > j) {
-                    cartasEnMesa.remove(i);
-                    cartasEnMesa.remove(j);
-                } else {
-                    cartasEnMesa.remove(j);
-                    cartasEnMesa.remove(i);
-                }
+                // Remove higher index first to avoid shifting issues
+                int higherIndex = Math.max(i, j);
+                int lowerIndex = Math.min(i, j);
+                
+                cartasEnMesa.remove(higherIndex);
+                cartasEnMesa.remove(lowerIndex);
 
                 return new Card[] { first, second };
             }
