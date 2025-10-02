@@ -9,6 +9,10 @@ public class Hand {
     }
 
     public void agregarCarta(Card carta) {
+        if (carta == null) {
+            System.err.println("Warning: intento de agregar una carta nula a la mano. Ignorando.");
+            return;
+        }
         cartas.add(carta);
     }
 
@@ -22,6 +26,10 @@ public class Hand {
 
     public void mostrarCartas() {
         for (Card carta : cartas) {
+            if (carta == null) {
+                System.out.println("<carta nula>");
+                continue;
+            }
             System.out.println(carta.toString());
         }
     }

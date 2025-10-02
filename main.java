@@ -8,6 +8,7 @@ public class main {
         Player p2 = new Player("Nombre2");
         Player p3 = new Player("Nombre3");
 
+        // Always run interactive console play
         game.play40(p1, p2, p3);
         
     }

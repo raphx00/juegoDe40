@@ -17,6 +17,10 @@ public class Player{
 
     // Adds a card to its own card pile
     public void addCardToCarton(Card carta) {
+        if (carta == null) {
+            System.err.println("Warning: intento de agregar una carta nula al carton del jugador '" + nombre + "'. Ignorando.");
+            return;
+        }
         carton.add(carta);
     }
     public String getNombre(){
@@ -63,5 +67,13 @@ public class Player{
 
     public void showHand(){
         mano.mostrarCartas();
+    }
+
+    // Register a "caída" (fall): increment counter and optionally print a message
+    public void registrarCaida(boolean imprimir) {
+        this.caidas++;
+        if (imprimir) {
+            System.out.println(this.nombre + " hizo CAÍDA!");
+        }
     }
 }

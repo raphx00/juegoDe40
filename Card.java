@@ -38,8 +38,20 @@ public class Card {
     }
 
     public Integer getCardValue(){
-        return cardPoints.get(valor);
+        return cardPoints.get(valor); // returns null for J/Q/K (figures)
     }
+
+    public boolean isFigure() {
+        return !cardPoints.containsKey(valor);
+    }
+
+    // Figures capture only by equality (J with J, Q with Q, K with K)
+    public boolean capturesByEquality(Card other) {
+        if (other == null) return false;
+        return this.valor.equals(other.valor) && this.isFigure() && other.isFigure();
+    }
+
+
 
     public String getNextCard() {
         return nextCard.get(valor);

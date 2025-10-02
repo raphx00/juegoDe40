@@ -9,6 +9,10 @@ public class Table {
     }
 
     public void agregarCarta(Card carta) {
+        if (carta == null) {
+            System.err.println("Warning: intento de agregar una carta nula a la mesa. Ignorando.");
+            return;
+        }
         cartasEnMesa.add(carta);
     }
 
@@ -20,27 +24,48 @@ public class Table {
     }
 
     public Card removeCardByValue(String value){
-        for(Card carta : cartasEnMesa){
-            if(carta.getValor().equals(value)){
-                cartasEnMesa.remove(carta);
+        for (int i = 0; i < cartasEnMesa.size(); i++){
+            Card carta = cartasEnMesa.get(i);
+            if (carta == null) continue;
+            if (carta.getValor().equals(value)){
+                cartasEnMesa.remove(i);
                 return carta;
             }
+            // special: if value is 'As' and carta is 'Rey', As captures Rey handled elsewhere
         }
         return null;
     }
 
     public void mostrarCartas() {
-        for (Card carta : cartasEnMesa) {
-            System.out.println(carta.toString());
+        for (int i = 0; i < cartasEnMesa.size(); i++){
+            Card carta = cartasEnMesa.get(i);
+            if (carta == null) {
+                System.out.println(i + ": <carta nula>");
+            } else {
+                System.out.println(i + ": " + carta.toString());
+            }
         }
     }
 
     public boolean verificarCarta(Card carta){ 
+        if (carta == null) return false;
         for (Card c : cartasEnMesa){
-            if ( c.getValor() == carta.getValor())
-                return true;
+            if (c == null) continue;
+            // If any card on the table has the same value, it's capturable by value
+            if (carta.getValor().equals(c.getValor())) return true;
+            // Figures capture by equality (J with J, Q with Q, K with K)
+            if (carta.capturesByEquality(c)) return true;
         }
+        return false;
+    }
 
+    // Returns true if there exists any card on the table with the given value
+    public boolean hasCardWithValue(String value) {
+        if (value == null) return false;
+        for (Card c : cartasEnMesa) {
+            if (c == null) continue;
+            if (value.equals(c.getValor())) return true;
+        }
         return false;
     }
 
@@ -104,6 +129,21 @@ public class Table {
 
     public boolean verificarLimpia(){
         return cartasEnMesa.isEmpty();
+    }
+
+    // Remove the first card that can be captured by 'played' according to equality/Ace-King rules
+    public Card removeFirstCapturableCard(Card played){
+        if (played == null) return null;
+        for (int i = 0; i < cartasEnMesa.size(); i++){
+            Card c = cartasEnMesa.get(i);
+            if (c == null) continue;
+            // capture by value or by figure equality
+            if (played.getValor().equals(c.getValor()) || played.capturesByEquality(c)){
+                cartasEnMesa.remove(i);
+                return c;
+            }
+        }
+        return null;
     }
 
   

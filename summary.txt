@@ -1,0 +1,20 @@
+
+--- Resumen final de la partida ---
+Manos jugadas: 15
+Ganador: Nombre2 (42 pts)
+
+Jugador: Nombre2
+  Puntos totales: 42
+  Caídas: 15 (30 pts)
+  Escobas: 6 (12 pts)
+
+Jugador: Nombre1
+  Puntos totales: 32
+  Caídas: 14 (28 pts)
+  Escobas: 2 (4 pts)
+
+Jugador: Nombre3
+  Puntos totales: 32
+  Caídas: 14 (28 pts)
+  Escobas: 2 (4 pts)
+
