@@ -21,10 +21,8 @@ public class Hand {
     }
 
     public void mostrarCartas() {
-        int idx = 0;
         for (Card carta : cartas) {
-            System.out.println(idx+"- [" + carta.getPalo() + " " + carta.getValor() + "]");
-            idx++;
+            System.out.println(carta.toString());
         }
     }
 

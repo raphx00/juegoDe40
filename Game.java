@@ -39,7 +39,7 @@ public class Game {
             players[2] = temp_Player;
 
             deck = new Deck();
-            while(round < 3){ 
+            while(round < 2){ 
                 
                 System.out.println("Puntajes: ");
                 for(Player player: players){
@@ -67,7 +67,7 @@ public class Game {
                         player.showHand();
 
                         // We let the player choose a card from his hand to be played
-                        System.out.print("Elige una carta para jugar: "); 
+                        System.out.print("Elige una carta para jugar [0-" + (player.getMano().getSize() - 1) + "]: "); 
                         while(true){
                             choice = scanner.nextInt();
                             if(choice < 0 || choice >= player.getMano().getSize()) System.out.print("Esa carta no existe. Elige de nuevo.");
@@ -136,8 +136,6 @@ public class Game {
 
                         }
                         else if(table.verifyByPairSum(playedCard)){
-
-
                             pair = table.removePairBySum(playedCard);
                                 if(pair != null){
                                     // If the played card is the last played one they get 2 points (Caida)
@@ -178,7 +176,7 @@ public class Game {
         
 
             // Last round
-            System.out.println("Ronda 4");
+            System.out.println("Ronda 3");
                 for(Player player: players){
                     for(int i = 0; i < 3; i++){
                         player.addCardToHand(deck.repartir());
