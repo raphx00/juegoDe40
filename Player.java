@@ -55,6 +55,10 @@ public class Player{
         }
     }
 
+    public int getScore(){
+        return puntuacion;
+    }
+
     public void showHand(){
         mano.mostrarCartas();
     }

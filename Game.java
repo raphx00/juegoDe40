@@ -31,7 +31,7 @@ public class Game {
         Collections.shuffle(Arrays.asList(players));
         
         while(round < 3){    
-            // We have to deal the cards, 5 for each player
+            System.out.println("Ronda " + (round + 1));
             for(Player player: players){
                 for(int i = 0; i < 5; i++){
                     player.addCardToHand(deck.repartir());
@@ -63,16 +63,52 @@ public class Game {
 
                     // If the played card is in the table by both sum and number we let the player choose which to take
                     // We still need to implement this one !!!
-                    
-                    // If they play by value as lastplayed, then they get 2 points
-                    if(table.verificarCarta(playedCard)){
-                        if(playedCard == lastPlayedCard) player.agregarPuntos(2);
-                        player.addCardToCarton(playedCard);
+                    if(table.verificarCarta(playedCard) && table.verifyByPairSum(playedCard)){
+                        System.out.println("La carta que jugaste puede ser tomada por valor o por suma. ¿Cómo quieres tomarla?");
+                        System.out.println("1- Por valor");
+                        System.out.println("2- Por suma");
+                        System.out.print("Elige una opción: ");
+                        while(true){
+                            choice = scanner.nextInt();
+                            if(choice != 1 && choice != 2) System.out.print("Esa opción no existe. Elige de nuevo.");
+                            else break;
+                        }
+                        if(choice == 1){
+                            // If the played card is the last played one they get 2 points (Caida)
+                            if(playedCard == lastPlayedCard) player.agregarPuntos(2);
+                            
+                            // Takes the played card and the one in the table
+                            player.addCardToCarton(playedCard);
+                            player.addCardToCarton(table.removeCardByValue(playedCard.getValor()));
+
+                            // We only check when something was removed from the table
+                            if(table.verificarLimpia() && player.getScore() < 38) player.agregarPuntos(2);
+                        }
+                        else{}
                     }
                     
+                    // If they play by value as lastplayed, then they get 2 points
+                    else if(table.verificarCarta(playedCard)){
+                        if(playedCard == lastPlayedCard) player.agregarPuntos(2);
+                        // Takes the played card and the one in the table
+                        player.addCardToCarton(playedCard);
+                        player.addCardToCarton(table.removeCardByValue(playedCard.getValor()));
+
+
+                        // We only check when something was removed from the table
+                        if(table.verificarLimpia() && player.getScore() < 38) player.agregarPuntos(2);
+
+                    }
+                    else if(table.verifyByPairSum(playedCard)){
+
+                    }
+                    else table.agregarCarta(playedCard);
+                
+                    lastPlayedCard = playedCard;
+
                     // If the played card is in the table either by number or by a sum the player takes them
                         // Then we check if the next number is in the table, and if it is: the player also takes it
-                        // Finally if the table is empty the player earns 2 points if under 38 points.
+                    // Finally if the table is empty the player earns 2 points if under 38 points.
 
                     // Else it gets added and removed form the player hand.
 
