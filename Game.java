@@ -13,306 +13,216 @@ public class Game {
     private int round = 0;
     private Card[] pair;
     private Player temp_Player;
+    private Scanner scanner;
 
 
     public void play40(Player p1, Player p2, Player p3) {
-
-        Scanner scanner = new Scanner(System.in);
-        int choice;
+        scanner = new Scanner(System.in);
 
         players[0] = p1;
         players[1] = p2;
         players[2] = p3;
 
-        // We will be using base 0 so this would be 3 rounds.
-
         // We shuffle the players so that its random who goes first
-        /* At the moment we dont have a way to identify players so we just shuffle the array */
         Collections.shuffle(Arrays.asList(players));
         
         while(p1.getScore() < 40 && p2.getScore() < 40 && p3.getScore() < 40){
-            
-
+            // Rotate players
             temp_Player = players[0];
             players[0] = players[1];
             players[1] = players[2];
             players[2] = temp_Player;
 
             deck = new Deck();
+            
+            // Play rounds 1 and 2 (5 cards each)
             while(round < 2){ 
-                
-                System.out.println("Puntajes: ");
-                for(Player player: players){
-                    System.out.println(player.getNombre() + ": " + player.getScore());
-                }
-
-                System.out.println("Ronda " + (round + 1));
-                for(Player player: players){
-                    for(int i = 0; i < 5; i++){
-                        player.addCardToHand(deck.repartir());
-                    }
-                }
-                // Now every player has to finish their cards doing one action per turn.
-                // At the end of every action we check if the player hasnt won yet.
-                for(int i = 0; i < 5; i++){
-                    for(Player player: players){
-
-                        // Here we do the game logic.
-
-                        // We show the player the table and its hand.
-                        System.out.println("Cartas en la mesa:");
-                        table.mostrarCartas();
-
-                        System.out.println("Tus cartas:");
-                        player.showHand();
-
-                        // We let the player choose a card from his hand to be played
-                        System.out.print("Elige una carta para jugar [0-" + (player.getMano().getSize() - 1) + "]: "); 
-                        while(true){
-                            choice = scanner.nextInt();
-                            if(choice < 0 || choice >= player.getMano().getSize()) System.out.print("Esa carta no existe. Elige de nuevo.");
-                            else break;
-                        }
-
-                        playedCard = player.getMano().playCardByIndex(choice);
-
-                        // If the played card is in the table by both sum and number we let the player choose which to take
-                        if(table.verificarCarta(playedCard) && table.verifyByPairSum(playedCard)){
-                            System.out.println("La carta que jugaste puede ser tomada por valor o por suma. ¿Cómo quieres tomarla?");
-                            System.out.println("1- Por valor");
-                            System.out.println("2- Por suma");
-                            System.out.print("Elige una opción: ");
-                            while(true){
-                                choice = scanner.nextInt();
-                                if(choice != 1 && choice != 2) System.out.print("Esa opción no existe. Elige de nuevo.");
-                                else break;
-                            }
-                            if(choice == 1){
-                                // If the played card is the last played one they get 2 points (Caida)
-                                if(playedCard == lastPlayedCard) player.agregarPuntos(2);
-                                
-                                // Takes the played card and the one in the table
-                                player.addCardToCarton(playedCard);
-                                player.addCardToCarton(table.removeCardByValue(playedCard.getValor()));
-
-                                // We only check when something was removed from the table
-                                if(table.verificarLimpia() && player.getScore() < 38) player.agregarPuntos(2);
-                            }
-                            else{
-                                pair = table.removePairBySum(playedCard);
-                                if(pair != null){
-                                    // If the played card is the last played one they get 2 points (Caida)
-                                    if(playedCard == lastPlayedCard) player.agregarPuntos(2);
-
-                                    // Takes the played card and the ones in the table
-                                    player.addCardToCarton(playedCard);
-                                    player.addCardToCarton(pair[0]);
-                                    player.addCardToCarton(pair[1]);
-
-                                    // We only check when something was removed from the table
-                                    if(table.verificarLimpia() && player.getScore() < 38) player.agregarPuntos(2);
-                                }
-
-                                // THIS ELSE SHOULDNT HAPPEN!!!
-                                else{
-                                    System.out.println("Error: No se pudo encontrar un par que sume el valor de la carta jugada.");
-                                    table.agregarCarta(playedCard);
-                                }
-                            }
-                        }
-                        
-                        // If they play by value as lastplayed, then they get 2 points
-                        else if(table.verificarCarta(playedCard)){
-                            if(playedCard == lastPlayedCard){
-                                player.agregarPuntos(2);
-                            }
-                                // Takes the played card and the one in the table
-                            player.addCardToCarton(playedCard);
-                            player.addCardToCarton(table.removeCardByValue(playedCard.getValor()));
-
-
-                            // We only check when something was removed from the table
-                            if(table.verificarLimpia() && player.getScore() < 38) player.agregarPuntos(2);
-
-                        }
-                        else if(table.verifyByPairSum(playedCard)){
-                            pair = table.removePairBySum(playedCard);
-                                if(pair != null){
-                                    // If the played card is the last played one they get 2 points (Caida)
-                                    if(playedCard == lastPlayedCard) player.agregarPuntos(2);
-
-                                    // Takes the played card and the ones in the table
-                                    player.addCardToCarton(playedCard);
-                                    player.addCardToCarton(pair[0]);
-                                    player.addCardToCarton(pair[1]);
-
-                                    // We only check when something was removed from the table
-                                    if(table.verificarLimpia() && player.getScore() < 38) player.agregarPuntos(2);
-                                }
-
-                                // THIS ELSE SHOULDNT HAPPEN!!!
-                                else{
-                                    System.out.println("Error: No se pudo encontrar un par que sume el valor de la carta jugada.");
-                                    table.agregarCarta(playedCard);
-                                }
-                        }
-                        else table.agregarCarta(playedCard);
-                    
-                        lastPlayedCard = playedCard;
-
-                        // If the played card is in the table either by number or by a sum the player takes them
-                            // Then we check if the next number is in the table, and if it is: the player also takes it
-                        // Finally if the table is empty the player earns 2 points if under 38 points.
-
-                        // Else it gets added and removed form the player hand.
-
-                        // We check if the player hasnt won yet
-                        // We refresh a Last played card variable.
-                    }
-                }
-
+                playRound(round + 1, 5, false);
                 round += 1;
             }
         
-
-            // Last round
-            System.out.println("Ronda 3");
-                for(Player player: players){
-                    for(int i = 0; i < 3; i++){
-                        player.addCardToHand(deck.repartir());
-                    }
-                }
-                table.agregarCarta(deck.repartir());
-                // Now every player has to finish their cards doing one action per turn.
-                // At the end of every action we check if the player hasnt won yet.
-                for(int i = 0; i < 3; i++){
-                    for(Player player: players){
-
-                        // Here we do the game logic.
-
-                        // We show the player the table and its hand.
-                        System.out.println("Cartas en la mesa:");
-                        table.mostrarCartas();
-
-                        System.out.println("Tus cartas:");
-                        player.showHand();
-
-                        // We let the player choose a card from his hand to be played
-                        System.out.print("Elige una carta para jugar: "); 
-                        while(true){
-                            choice = scanner.nextInt();
-                            if(choice < 0 || choice >= player.getMano().getSize()) System.out.print("Esa carta no existe. Elige de nuevo.");
-                            else break;
-                        }
-
-                        playedCard = player.getMano().playCardByIndex(choice);
-
-                        // If the played card is in the table by both sum and number we let the player choose which to take
-                        if(table.verificarCarta(playedCard) && table.verifyByPairSum(playedCard)){
-                            System.out.println("La carta que jugaste puede ser tomada por valor o por suma. ¿Cómo quieres tomarla?");
-                            System.out.println("1- Por valor");
-                            System.out.println("2- Por suma");
-                            System.out.print("Elige una opción: ");
-                            while(true){
-                                choice = scanner.nextInt();
-                                if(choice != 1 && choice != 2) System.out.print("Esa opción no existe. Elige de nuevo.");
-                                else break;
-                            }
-                            if(choice == 1){
-                                // If the played card is the last played one they get 2 points (Caida)
-                                if(playedCard == lastPlayedCard) player.agregarPuntos(2);
-                                
-                                // Takes the played card and the one in the table
-                                player.addCardToCarton(playedCard);
-                                player.addCardToCarton(table.removeCardByValue(playedCard.getValor()));
-
-                                // We only check when something was removed from the table
-                                if(table.verificarLimpia() && player.getScore() < 38) player.agregarPuntos(2);
-                            }
-                            else{
-                                pair = table.removePairBySum(playedCard);
-                                if(pair != null){
-                                    // If the played card is the last played one they get 2 points (Caida)
-                                    if(playedCard == lastPlayedCard) player.agregarPuntos(2);
-
-                                    // Takes the played card and the ones in the table
-                                    player.addCardToCarton(playedCard);
-                                    player.addCardToCarton(pair[0]);
-                                    player.addCardToCarton(pair[1]);
-
-                                    // We only check when something was removed from the table
-                                    if(table.verificarLimpia() && player.getScore() < 38) player.agregarPuntos(2);
-                                }
-
-                                // THIS ELSE SHOULDNT HAPPEN!!!
-                                else{
-                                    System.out.println("Error: No se pudo encontrar un par que sume el valor de la carta jugada.");
-                                    table.agregarCarta(playedCard);
-                                }
-                            }
-                        }
-                        
-                        // If they play by value as lastplayed, then they get 2 points
-                        else if(table.verificarCarta(playedCard)){
-                            if(playedCard == lastPlayedCard){
-                                player.agregarPuntos(2);
-                            }
-                            // Takes the played card and the one in the table
-                            player.addCardToCarton(playedCard);
-                            player.addCardToCarton(table.removeCardByValue(playedCard.getValor()));
-
-
-                            // We only check when something was removed from the table
-                            if(table.verificarLimpia() && player.getScore() < 38) player.agregarPuntos(2);
-
-                        }
-                        else if(table.verifyByPairSum(playedCard)){
-
-
-                            pair = table.removePairBySum(playedCard);
-                                if(pair != null){
-                                    // If the played card is the last played one they get 2 points (Caida)
-                                    if(playedCard == lastPlayedCard) player.agregarPuntos(2);
-
-                                    // Takes the played card and the ones in the table
-                                    player.addCardToCarton(playedCard);
-                                    player.addCardToCarton(pair[0]);
-                                    player.addCardToCarton(pair[1]);
-
-                                    // We only check when something was removed from the table
-                                    if(table.verificarLimpia() && player.getScore() < 38) player.agregarPuntos(2);
-                                }
-
-                                // THIS ELSE SHOULDNT HAPPEN!!!
-                                else{
-                                    System.out.println("Error: No se pudo encontrar un par que sume el valor de la carta jugada.");
-                                    table.agregarCarta(playedCard);
-                                }
-                        }
-                        else table.agregarCarta(playedCard);
-                    
-                        lastPlayedCard = playedCard;
-
-                        // If the played card is in the table either by number or by a sum the player takes them
-                            // Then we check if the next number is in the table, and if it is: the player also takes it
-                        // Finally if the table is empty the player earns 2 points if under 38 points.
-
-                        // Else it gets added and removed form the player hand.
-
-                        // We check if the player hasnt won yet
-                        // We refresh a Last played card variable.
-                    }
-                }
-
-                round += 1;
-            }
+            // Play round 3 (3 cards each + 1 card on table)
+            playRound(3, 3, true);
+            round += 1;
+            
             System.out.println("El ganador es: ");
-
-            if(p1.getScore() > 40) System.out.println(p1.getNombre());
-            if(p2.getScore() > 40) System.out.println(p2.getNombre());
-            if(p3.getScore() > 40) System.out.println(p3.getNombre());
-
-            scanner.close();
+            if(p1.getScore() >= 40) System.out.println(p1.getNombre());
+            if(p2.getScore() >= 40) System.out.println(p2.getNombre());
+            if(p3.getScore() >= 40) System.out.println(p3.getNombre());
+        }
+        
+        scanner.close();
+    }
+    
+    // Method to deal cards to all players
+    private void dealCards(int cardsPerPlayer) {
+        for(Player player: players){
+            for(int i = 0; i < cardsPerPlayer; i++){
+                player.addCardToHand(deck.repartir());
+            }
         }
     }
+    
+    // Method to play a complete round
+    private void playRound(int roundNumber, int cardsPerPlayer, boolean addCardToTable) {
+        showScores();
+        System.out.println("Ronda " + roundNumber);
+        
+        // Deal cards to players
+        dealCards(cardsPerPlayer);
+        
+        // Add one card to table if it's the last round
+        if(addCardToTable) {
+            table.agregarCarta(deck.repartir());
+        }
+        
+        // Play all cards in hand
+        for(int i = 0; i < cardsPerPlayer; i++){
+            for(Player player: players){
+                playPlayerTurn(player, roundNumber == 3);
+            }
+        }
+    }
+    
+    // Method to display current scores
+    private void showScores() {
+        System.out.println("Puntajes: ");
+        for(Player player: players){
+            System.out.println(player.getNombre() + ": " + player.getScore());
+        }
+    }
+    
+    // Method to handle a single player's turn
+    private void playPlayerTurn(Player player, boolean showLastCard) {
+        // Show last played card for round 3 only
+        if(showLastCard) {
+            if(lastPlayedCard != null)
+                System.out.println("La última carta jugada fue: " + lastPlayedCard.toString());
+            else
+                System.out.println("Nadie ha jugado una carta aún.");
+        }
+
+        // Show table and player's hand
+        System.out.println("Cartas en la mesa:");
+        table.mostrarCartas();
+        System.out.println("Tus cartas:");
+        player.showHand();
+
+        // Get player's card choice
+        int choice = getPlayerChoice(player);
+        playedCard = player.getMano().playCardByIndex(choice);
+
+        // Process the played card
+        processPlayedCard(player, showLastCard);
+        
+        lastPlayedCard = playedCard;
+    }
+    
+    // Method to get valid input from player
+    private int getPlayerChoice(Player player) {
+        int choice;
+        if(player.getMano().getSize() == 1) {
+            System.out.print("Elige una carta para jugar [0-0]: ");
+        } else {
+            System.out.print("Elige una carta para jugar [0-" + (player.getMano().getSize() - 1) + "]: ");
+        }
+        
+        while(true){
+            choice = scanner.nextInt();
+            if(choice < 0 || choice >= player.getMano().getSize()) {
+                System.out.print("Esa carta no existe. Elige de nuevo: ");
+            } else {
+                break;
+            }
+        }
+        return choice;
+    }
+    
+    // Method to process the played card logic
+    private void processPlayedCard(Player player, boolean showCaidaMessage) {
+        boolean canTakeByValue = table.verificarCarta(playedCard);
+        boolean canTakeBySum = table.verifyByPairSum(playedCard);
+        
+        if(canTakeByValue && canTakeBySum) {
+            // Player can choose between value or sum
+            int choice = getValueOrSumChoice();
+            if(choice == 1) {
+                takeByValue(player, showCaidaMessage);
+            } else {
+                takeBySum(player);
+            }
+        } else if(canTakeByValue) {
+            takeByValue(player, showCaidaMessage);
+        } else if(canTakeBySum) {
+            takeBySum(player);
+        } else {
+            // Card goes to table
+            table.agregarCarta(playedCard);
+        }
+    }
+    
+    // Method to get player's choice between value or sum
+    private int getValueOrSumChoice() {
+        System.out.println("La carta que jugaste puede ser tomada por valor o por suma. ¿Cómo quieres tomarla?");
+        System.out.println("1- Por valor");
+        System.out.println("2- Por suma");
+        System.out.print("Elige una opción: ");
+        
+        int choice;
+        while(true){
+            choice = scanner.nextInt();
+            if(choice != 1 && choice != 2) {
+                System.out.print("Esa opción no existe. Elige de nuevo: ");
+            } else {
+                break;
+            }
+        }
+        return choice;
+    }
+    
+    // Method to take cards by value
+    private void takeByValue(Player player, boolean showCaidaMessage) {
+        // Check for "Caida" (playing same card as last played)
+        if(playedCard.getValor().equals(lastPlayedCard != null ? lastPlayedCard.getValor() : "")) {
+            if(showCaidaMessage) {
+                System.out.println("LA CAIDA SI FUNCIONA!!!!!!!");
+            }
+            player.agregarPuntos(2);
+        }
+        
+        // Take the cards
+        player.addCardToCarton(playedCard);
+        player.addCardToCarton(table.removeCardByValue(playedCard.getValor()));
+
+        // Check for table clear bonus
+        if(table.verificarLimpia() && player.getScore() < 38) {
+            player.agregarPuntos(2);
+        }
+    }
+    
+    // Method to take cards by sum
+    private void takeBySum(Player player) {
+        pair = table.removePairBySum(playedCard);
+        if(pair != null){
+            // Check for "Caida" 
+            if(playedCard.getValor().equals(lastPlayedCard != null ? lastPlayedCard.getValor() : "")) {
+                player.agregarPuntos(2);
+            }
+
+            // Take the cards
+            player.addCardToCarton(playedCard);
+            player.addCardToCarton(pair[0]);
+            player.addCardToCarton(pair[1]);
+
+            // Check for table clear bonus
+            if(table.verificarLimpia() && player.getScore() < 38) {
+                player.agregarPuntos(2);
+            }
+        } else {
+            // This shouldn't happen
+            System.out.println("Error: No se pudo encontrar un par que sume el valor de la carta jugada.");
+            table.agregarCarta(playedCard);
+        }
+    }
+}
 
